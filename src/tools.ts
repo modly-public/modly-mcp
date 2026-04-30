@@ -8,12 +8,35 @@
  * gated endpoints not exposed here.
  */
 import type { ModlyClient } from "@modly/sdk";
+import { EN_TEXT } from "./locales/en.js";
 
 export interface Tool {
   name: string;
-  description: string;
+  description?: string;
+  descriptionKey?: string;
+  descriptionValues?: Record<string, unknown>;
   inputSchema: Record<string, unknown>;
   handler: (args: Record<string, unknown>, client: ModlyClient) => Promise<unknown>;
+}
+
+export function toolDescription(tool: Tool): string {
+  return tool.descriptionKey ? (EN_TEXT[tool.descriptionKey] ?? tool.name) : (tool.description ?? tool.name);
+}
+
+function localizeSchemaNode(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map((v) => localizeSchemaNode(v));
+  if (!value || typeof value !== "object") return value;
+  const input = value as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(input)) {
+    if (k === "descriptionKey" && typeof v === "string") out["description"] = EN_TEXT[v] ?? v;
+    else out[k] = localizeSchemaNode(v);
+  }
+  return out;
+}
+
+export function toolInputSchema(tool: Tool): Record<string, unknown> {
+  return localizeSchemaNode(tool.inputSchema) as Record<string, unknown>;
 }
 
 function getStr(args: Record<string, unknown>, key: string): string {
@@ -38,31 +61,30 @@ function getStrArr(args: Record<string, unknown>, key: string): string[] {
 export const TOOLS: Tool[] = [
   {
     name: "list_webhook_targets",
-    description: "List every saved outbound webhook target in the guild.",
+    descriptionKey: "mcp.tools.list_webhook_targets.description",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     handler: async (_args, client) => client.webhooks.listTargets(),
   },
   {
     name: "list_webhook_groups",
-    description: "List every saved target group (named bundles of targets) in the guild.",
+    descriptionKey: "mcp.tools.list_webhook_groups.description",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     handler: async (_args, client) => client.webhooks.listGroups(),
   },
   {
     name: "list_embed_templates",
-    description: "List every saved embed template (the embed library used by /webhook + auto-messages).",
+    descriptionKey: "mcp.tools.list_embed_templates.description",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     handler: async (_args, client) => client.embeds.list(),
   },
   {
     name: "save_embed_template",
-    description:
-      "Create or overwrite a named embed template. The `json` argument is a Discord-style { content?, embeds[] } payload.",
+    descriptionKey: "mcp.tools.save_embed_template.description",
     inputSchema: {
       type: "object",
       properties: {
-        name: { type: "string", description: "Lowercase kebab name, e.g. weekly-update." },
-        json: { type: "object", description: "{ content?: string, embeds: APIEmbed[] }" },
+        name: { type: "string", descriptionKey: "mcp.fields.kebab_name" },
+        json: { type: "object", descriptionKey: "mcp.fields.inline_message_json" },
       },
       required: ["name", "json"],
     },
@@ -75,19 +97,18 @@ export const TOOLS: Tool[] = [
   },
   {
     name: "send_webhook",
-    description:
-      "Broadcast a saved embed template to one or more named targets, or pass an inline embed. Returns per-target send results.",
+    descriptionKey: "mcp.tools.send_webhook.description",
     inputSchema: {
       type: "object",
       properties: {
         targetIds: {
           type: "array",
           items: { type: "string" },
-          description: "Webhook target IDs (from list_webhook_targets).",
+          descriptionKey: "mcp.fields.target_ids",
           minItems: 1,
         },
-        embedTemplateName: { type: "string", description: "Saved embed template name to broadcast." },
-        content: { type: "string", description: "Optional plain-text prefix." },
+        embedTemplateName: { type: "string", descriptionKey: "mcp.fields.embed_template_name" },
+        content: { type: "string", descriptionKey: "mcp.fields.plain_text_prefix" },
       },
       required: ["targetIds"],
     },
@@ -104,12 +125,12 @@ export const TOOLS: Tool[] = [
   },
   {
     name: "list_moderation_cases",
-    description: "List recent moderation cases for the guild, optionally filtered by user.",
+    descriptionKey: "mcp.tools.list_moderation_cases.description",
     inputSchema: {
       type: "object",
       properties: {
-        userId: { type: "string", description: "Optional Discord user ID to filter by." },
-        limit: { type: "number", description: "Max cases to return (default 50)." },
+        userId: { type: "string", descriptionKey: "mcp.fields.user_id_filter" },
+        limit: { type: "number", descriptionKey: "mcp.fields.limit" },
       },
     },
     handler: async (args, client) => {
@@ -117,6 +138,31 @@ export const TOOLS: Tool[] = [
       const limit = typeof args["limit"] === "number" ? args["limit"] : undefined;
       return client.moderation.listCases({
         ...(userId !== undefined ? { userId } : {}),
+        ...(limit !== undefined ? { limit } : {}),
+      });
+    },
+  },
+  {
+    name: "list_evader_detections",
+    descriptionKey: "mcp.tools.list_evader_detections.description",
+    inputSchema: {
+      type: "object",
+      properties: {
+        userId: { type: "string" },
+        riskBand: { type: "string" },
+        unresolved: { type: "boolean" },
+        limit: { type: "number" },
+      },
+    },
+    handler: async (args, client) => {
+      const userId = getOptStr(args, "userId");
+      const riskBand = getOptStr(args, "riskBand");
+      const unresolved = typeof args["unresolved"] === "boolean" ? args["unresolved"] : undefined;
+      const limit = typeof args["limit"] === "number" ? args["limit"] : undefined;
+      return client.safety.listEvaderDetections({
+        ...(userId !== undefined ? { userId } : {}),
+        ...(riskBand !== undefined ? { riskBand } : {}),
+        ...(unresolved !== undefined ? { unresolved } : {}),
         ...(limit !== undefined ? { limit } : {}),
       });
     },

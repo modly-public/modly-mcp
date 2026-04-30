@@ -15,7 +15,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { ModlyClient } from "@modly/sdk";
-import { TOOLS, dispatch } from "./tools.js";
+import { TOOLS, dispatch, toolDescription, toolInputSchema } from "./tools.js";
 
 const GUILD_ID = process.env["MODLY_GUILD_ID"];
 const API_KEY = process.env["MODLY_API_KEY"];
@@ -38,8 +38,8 @@ const server = new Server(
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: TOOLS.map((t) => ({
     name: t.name,
-    description: t.description,
-    inputSchema: t.inputSchema,
+    description: toolDescription(t),
+    inputSchema: toolInputSchema(t),
   })),
 }));
 

@@ -1,0 +1,16 @@
+export const EN_TEXT: Record<string, string> = {
+  "mcp.tools.list_webhook_targets.description": "List every saved outbound webhook target in the guild.",
+  "mcp.tools.list_webhook_groups.description": "List every saved target group in the guild.",
+  "mcp.tools.list_embed_templates.description": "List every saved embed template in the guild.",
+  "mcp.tools.save_embed_template.description": "Create or overwrite a named embed template.",
+  "mcp.tools.send_webhook.description": "Broadcast a saved embed template to one or more named targets, or pass an inline embed.",
+  "mcp.tools.list_moderation_cases.description": "List recent moderation cases for the guild, optionally filtered by user.",
+  "mcp.tools.list_evader_detections.description": "List recent ban-evasion detections for the guild.",
+  "mcp.fields.embed_template_name": "Saved embed template name to broadcast.",
+  "mcp.fields.inline_message_json": "{ content?: string, embeds: APIEmbed[] }",
+  "mcp.fields.kebab_name": "Lowercase kebab name, e.g. weekly-update.",
+  "mcp.fields.plain_text_prefix": "Optional plain-text prefix.",
+  "mcp.fields.target_ids": "Webhook target IDs from list_webhook_targets.",
+  "mcp.fields.user_id_filter": "Optional Discord user ID to filter by.",
+  "mcp.fields.limit": "Maximum rows to return.",
+};
