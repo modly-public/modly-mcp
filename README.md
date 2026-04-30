@@ -2,7 +2,7 @@
 
 Local [Model Context Protocol](https://modelcontextprotocol.io) server that exposes [Modly](https://modly.net)'s guild-management tools to any MCP-compatible agent — Claude Desktop, Cursor, Cline, Continue, custom agents, etc.
 
-Run it on your own machine. It connects to your Modly server using a guild-scoped API key.
+Run it on your own machine. It connects to your Modly server using a personal access token (created in the dashboard at **Account Settings → API tokens**) and a guild ID.
 
 ## Install
 
