@@ -1,4 +1,4 @@
-# Contributing to @modly/mcp-server
+# Contributing to @modly_public/mcp-server
 
 The MCP server is intentionally small. Most contributions add a tool, fix a schema, or improve a description.
 

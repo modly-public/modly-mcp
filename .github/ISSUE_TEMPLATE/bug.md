@@ -19,6 +19,6 @@ Args: { ... }
 
 ## Environment
 
-- `@modly/mcp-server` version:
+- `@modly_public/mcp-server` version:
 - MCP host (Claude Desktop / Cursor / Cline / other):
 - Node version:

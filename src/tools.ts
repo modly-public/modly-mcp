@@ -7,7 +7,7 @@
  * depend on which SDK namespaces happen to be typed yet. The MCP server is
  * meant to be exhaustive — every meaningful capability the bot exposes.
  */
-import type { ModlyClient } from "@modly/sdk";
+import type { ModlyClient } from "@modly_public/sdk";
 import { EN_TEXT } from "./locales/en.js";
 
 export interface Tool {

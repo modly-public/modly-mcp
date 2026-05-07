@@ -14,7 +14,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { ModlyClient } from "@modly/sdk";
+import { ModlyClient } from "@modly_public/sdk";
 import { TOOLS, dispatch, toolDescription, toolInputSchema } from "./tools.js";
 
 const GUILD_ID = process.env["MODLY_GUILD_ID"];

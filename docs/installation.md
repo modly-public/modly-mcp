@@ -2,11 +2,11 @@
 
 This server uses MCP's stdio transport. Every MCP host that supports stdio works the same way:
 
-1. Tell the host how to launch the server: `npx -y @modly/mcp-server` (npm) **or** `npx -y github:modly-public/modly-mcp` (git).
+1. Tell the host how to launch the server: `npx -y @modly_public/mcp-server` (npm) **or** `npx -y github:modly-public/modly-mcp` (git).
 2. Set two env vars: `MODLY_GUILD_ID` and `MODLY_API_KEY`.
 3. (Optional) Set `MODLY_BASE_URL` if you self-host Modly.
 
-> **Today**: `@modly/mcp-server` isn't published to npm yet. Use `github:modly-public/modly-mcp` everywhere you see `@modly/mcp-server` below — `npx` will clone, run the `prepare` build, and launch in one step. Once the npm package is live we'll flip these examples back.
+> **Today**: `@modly_public/mcp-server` isn't published to npm yet. Use `github:modly-public/modly-mcp` everywhere you see `@modly_public/mcp-server` below — `npx` will clone, run the `prepare` build, and launch in one step. Once the npm package is live we'll flip these examples back.
 
 ## Get an API key
 
@@ -35,7 +35,7 @@ Edit `claude_desktop_config.json`:
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "@modly_public/mcp-server"],
       "env": {
         "MODLY_GUILD_ID": "1234567890",
         "MODLY_API_KEY": "modly_pat_..."
@@ -56,7 +56,7 @@ Restart Claude Desktop. Tools appear under the hammer icon.
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "@modly_public/mcp-server"],
       "env": { "MODLY_GUILD_ID": "...", "MODLY_API_KEY": "modly_pat_..." }
     }
   }
@@ -74,7 +74,7 @@ Open the Cline panel → settings cog → **Edit MCP settings**:
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "@modly_public/mcp-server"],
       "env": { "MODLY_GUILD_ID": "...", "MODLY_API_KEY": "modly_pat_..." }
     }
   }
@@ -93,7 +93,7 @@ In `~/.continue/config.json`:
         "transport": {
           "type": "stdio",
           "command": "npx",
-          "args": ["-y", "@modly/mcp-server"],
+          "args": ["-y", "@modly_public/mcp-server"],
           "env": { "MODLY_GUILD_ID": "...", "MODLY_API_KEY": "modly_pat_..." }
         }
       }
@@ -131,7 +131,7 @@ If you get a list back, you're set. If you see `MODLY_GUILD_ID and MODLY_API_KEY
 Don't want auto-updates from `npx -y`? Install globally and pin:
 
 ```bash
-npm install -g @modly/mcp-server@0.1.0
+npm install -g @modly_public/mcp-server@0.1.0
 ```
 
 …then change the config to `"command": "modly-mcp", "args": []`.

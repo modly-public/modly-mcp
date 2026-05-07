@@ -1,4 +1,4 @@
-# @modly/mcp-server
+# @modly_public/mcp-server
 
 > Modly is the all-in-one Discord moderation bot — this is the official **MCP server** that lets any Model Context Protocol agent (Claude Desktop, Cursor, Cline, Continue, custom agents) drive a Modly-powered guild.
 
@@ -11,10 +11,10 @@ Run it locally over stdio. Point it at your guild with a personal access token. 
 ## Install
 
 ```bash
-npm install -g @modly/mcp-server
+npm install -g @modly_public/mcp-server
 ```
 
-…or skip global install and use `npx @modly/mcp-server` directly in your MCP host config (recommended — auto-updates with each release).
+…or skip global install and use `npx @modly_public/mcp-server` directly in your MCP host config (recommended — auto-updates with each release).
 
 ## Run without npm registry
 
@@ -31,7 +31,7 @@ cd modly-mcp && npm install && npm run build && npm start
 
 The same form works inside MCP host configs — see the [Host configs](#host-configs) section below for `npx github:modly-public/modly-mcp` snippets.
 
-> The git-URL form pulls `@modly/sdk` straight from `github:modly-public/modly-sdk`, so neither package needs to be on npm yet.
+> The git-URL form pulls `@modly_public/sdk` straight from `github:modly-public/modly-sdk`, so neither package needs to be on npm yet.
 
 ## Environment variables
 
@@ -44,7 +44,7 @@ The same form works inside MCP host configs — see the [Host configs](#host-con
 ## Host configs
 
 > **Which `args` to use?**
-> - `["-y", "@modly/mcp-server"]` — preferred, once the package is published to npm.
+> - `["-y", "@modly_public/mcp-server"]` — preferred, once the package is published to npm.
 > - `["-y", "github:modly-public/modly-mcp"]` — works **today** without an npm publish; pulls source from GitHub, runs the `prepare` build, and launches.
 >
 > The two forms are interchangeable inside any of the host configs below.
@@ -71,7 +71,7 @@ Edit `claude_desktop_config.json`:
 }
 ```
 
-Once `@modly/mcp-server` is published to npm, swap `"github:modly-public/modly-mcp"` for `"@modly/mcp-server"`.
+Once `@modly_public/mcp-server` is published to npm, swap `"github:modly-public/modly-mcp"` for `"@modly_public/mcp-server"`.
 
 Restart Claude Desktop. The Modly tools appear under the hammer icon.
 
