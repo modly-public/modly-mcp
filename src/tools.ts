@@ -181,10 +181,11 @@ export const TOOLS: Tool[] = [
     name: "ban_user",
     descriptionKey: "mcp.tools.ban_user.description",
     inputSchema: { type: "object", properties: { userId: Sn, reason: Sn, deleteMessageDays: Nn, durationMs: Nn }, required: ["userId"] },
-    // expected-by: dedicated /cases/ban POST endpoint or moderation action route — currently routed via /automations test fallback
-    handler: async (a, c) => raw(c, "POST", `/automations/test`, {
-      kind: "ban_user",
-      payload: { userId: getStr(a, "userId"), reason: getOptStr(a, "reason"), deleteMessageDays: getOptNum(a, "deleteMessageDays"), durationMs: getOptNum(a, "durationMs") },
+    handler: async (a, c) => raw(c, "POST", `/cases/ban`, {
+      userId: getStr(a, "userId"),
+      reason: getOptStr(a, "reason"),
+      deleteMessageDays: getOptNum(a, "deleteMessageDays"),
+      durationMs: getOptNum(a, "durationMs"),
     }),
   },
   {
@@ -198,15 +199,13 @@ export const TOOLS: Tool[] = [
     name: "kick_user",
     descriptionKey: "mcp.tools.kick_user.description",
     inputSchema: { type: "object", properties: { userId: Sn, reason: Sn }, required: ["userId"] },
-    // expected-by: dedicated /cases/kick POST endpoint
-    handler: async (a, c) => raw(c, "POST", `/automations/test`, { kind: "kick_user", payload: { userId: getStr(a, "userId"), reason: getOptStr(a, "reason") } }),
+    handler: async (a, c) => raw(c, "POST", `/cases/kick`, { userId: getStr(a, "userId"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "timeout_user",
     descriptionKey: "mcp.tools.timeout_user.description",
     inputSchema: { type: "object", properties: { userId: Sn, durationMs: Nn, reason: Sn }, required: ["userId", "durationMs"] },
-    // expected-by: dedicated /cases/timeout POST endpoint
-    handler: async (a, c) => raw(c, "POST", `/automations/test`, { kind: "timeout_user", payload: { userId: getStr(a, "userId"), durationMs: getOptNum(a, "durationMs"), reason: getOptStr(a, "reason") } }),
+    handler: async (a, c) => raw(c, "POST", `/cases/timeout`, { userId: getStr(a, "userId"), durationMs: getOptNum(a, "durationMs"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "untimeout_user",
@@ -219,8 +218,7 @@ export const TOOLS: Tool[] = [
     name: "warn_user",
     descriptionKey: "mcp.tools.warn_user.description",
     inputSchema: { type: "object", properties: { userId: Sn, reason: Sn, severity: Sn }, required: ["userId", "reason"] },
-    // expected-by: dedicated /cases/warn POST endpoint
-    handler: async (a, c) => raw(c, "POST", `/automations/test`, { kind: "warn_user", payload: { userId: getStr(a, "userId"), reason: getStr(a, "reason"), severity: getOptStr(a, "severity") } }),
+    handler: async (a, c) => raw(c, "POST", `/cases/warn`, { userId: getStr(a, "userId"), reason: getStr(a, "reason"), severity: getOptStr(a, "severity") }),
   },
   {
     name: "softban_user",
@@ -327,7 +325,6 @@ export const TOOLS: Tool[] = [
     name: "get_automod_rule",
     descriptionKey: "mcp.tools.get_automod_rule.description",
     inputSchema: { type: "object", properties: { ruleId: Sn }, required: ["ruleId"] },
-    // expected-by: GET /automod/rules/:id (currently only list endpoint exists)
     handler: async (a, c) => raw(c, "GET", `/automod/rules/${encodeURIComponent(getStr(a, "ruleId"))}`),
   },
   {
@@ -698,7 +695,6 @@ export const TOOLS: Tool[] = [
     name: "get_form",
     descriptionKey: "mcp.tools.get_form.description",
     inputSchema: { type: "object", properties: { formId: Sn }, required: ["formId"] },
-    // expected-by: /forms/:formId GET
     handler: async (a, c) => raw(c, "GET", `/forms/${encodeURIComponent(getStr(a, "formId"))}`),
   },
   {
@@ -711,7 +707,6 @@ export const TOOLS: Tool[] = [
     name: "update_form",
     descriptionKey: "mcp.tools.update_form.description",
     inputSchema: { type: "object", properties: { formId: Sn, patch: On }, required: ["formId", "patch"] },
-    // expected-by: /forms/:formId PATCH
     handler: async (a, c) => raw(c, "PATCH", `/forms/${encodeURIComponent(getStr(a, "formId"))}`, getObj(a, "patch")),
   },
   {
@@ -738,7 +733,6 @@ export const TOOLS: Tool[] = [
     name: "get_form_submission",
     descriptionKey: "mcp.tools.get_form_submission.description",
     inputSchema: { type: "object", properties: { submissionId: Sn }, required: ["submissionId"] },
-    // expected-by: /forms/submissions/:subId GET
     handler: async (a, c) => raw(c, "GET", `/forms/submissions/${encodeURIComponent(getStr(a, "submissionId"))}`),
   },
   {
@@ -872,7 +866,6 @@ export const TOOLS: Tool[] = [
     name: "get_custom_command",
     descriptionKey: "mcp.tools.get_custom_command.description",
     inputSchema: { type: "object", properties: { commandId: Sn }, required: ["commandId"] },
-    // expected-by: /custom-commands/commands/:id GET
     handler: async (a, c) => raw(c, "GET", `/custom-commands/commands/${encodeURIComponent(getStr(a, "commandId"))}`),
   },
   {
@@ -925,7 +918,6 @@ export const TOOLS: Tool[] = [
     name: "get_tag",
     descriptionKey: "mcp.tools.get_tag.description",
     inputSchema: { type: "object", properties: { tagId: Sn }, required: ["tagId"] },
-    // expected-by: /saved-responses/responses/:id GET
     handler: async (a, c) => raw(c, "GET", `/saved-responses/responses/${encodeURIComponent(getStr(a, "tagId"))}`),
   },
   {
@@ -1002,7 +994,6 @@ export const TOOLS: Tool[] = [
     name: "get_automation_rule",
     descriptionKey: "mcp.tools.get_automation_rule.description",
     inputSchema: { type: "object", properties: { ruleId: Sn }, required: ["ruleId"] },
-    // expected-by: /automations/rules/:ruleId GET
     handler: async (a, c) => raw(c, "GET", `/automations/rules/${encodeURIComponent(getStr(a, "ruleId"))}`),
   },
   {
@@ -1015,7 +1006,6 @@ export const TOOLS: Tool[] = [
     name: "update_automation_rule",
     descriptionKey: "mcp.tools.update_automation_rule.description",
     inputSchema: { type: "object", properties: { ruleId: Sn, patch: On }, required: ["ruleId", "patch"] },
-    // expected-by: /automations/rules/:ruleId PATCH
     handler: async (a, c) => raw(c, "PATCH", `/automations/rules/${encodeURIComponent(getStr(a, "ruleId"))}`, getObj(a, "patch")),
   },
   {
@@ -1034,7 +1024,6 @@ export const TOOLS: Tool[] = [
     name: "run_automation_rule_now",
     descriptionKey: "mcp.tools.run_automation_rule_now.description",
     inputSchema: { type: "object", properties: { ruleId: Sn, payload: On }, required: ["ruleId"] },
-    // expected-by: /automations/rules/:ruleId/run POST
     handler: async (a, c) => raw(c, "POST", `/automations/rules/${encodeURIComponent(getStr(a, "ruleId"))}/run`, {
       payload: getOptObj(a, "payload"),
     }),
@@ -1161,7 +1150,7 @@ export const TOOLS: Tool[] = [
     name: "get_leveling_top",
     descriptionKey: "mcp.tools.get_leveling_top.description",
     inputSchema: { type: "object", properties: { limit: Nn, scope: Sn } },
-    handler: async (a, c) => raw(c, "GET", `/leveling${qs({ limit: getOptNum(a, "limit"), scope: getOptStr(a, "scope") })}`),
+    handler: async (a, c) => raw(c, "GET", `/leveling/top${qs({ limit: getOptNum(a, "limit"), scope: getOptStr(a, "scope") })}`),
   },
   {
     name: "get_member_xp",
@@ -1180,13 +1169,13 @@ export const TOOLS: Tool[] = [
     name: "give_xp",
     descriptionKey: "mcp.tools.give_xp.description",
     inputSchema: { type: "object", properties: { userId: Sn, amount: Nn, reason: Sn }, required: ["userId", "amount"] },
-    handler: async (a, c) => raw(c, "POST", `/leveling/users/xp`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), op: "add", reason: getOptStr(a, "reason") }),
+    handler: async (a, c) => raw(c, "POST", `/leveling/xp/give`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "take_xp",
     descriptionKey: "mcp.tools.take_xp.description",
     inputSchema: { type: "object", properties: { userId: Sn, amount: Nn, reason: Sn }, required: ["userId", "amount"] },
-    handler: async (a, c) => raw(c, "POST", `/leveling/users/xp`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), op: "remove", reason: getOptStr(a, "reason") }),
+    handler: async (a, c) => raw(c, "POST", `/leveling/xp/take`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "reset_member_xp",
@@ -1253,8 +1242,7 @@ export const TOOLS: Tool[] = [
     name: "get_member_balance",
     descriptionKey: "mcp.tools.get_member_balance.description",
     inputSchema: { type: "object", properties: { userId: Sn }, required: ["userId"] },
-    // expected-by: /economy/users/:userId GET
-    handler: async (a, c) => raw(c, "GET", `/economy/users/${encodeURIComponent(getStr(a, "userId"))}`),
+    handler: async (a, c) => raw(c, "GET", `/economy/users/${encodeURIComponent(getStr(a, "userId"))}/balance`),
   },
   {
     name: "set_member_balance",
@@ -1267,28 +1255,24 @@ export const TOOLS: Tool[] = [
     name: "give_currency",
     descriptionKey: "mcp.tools.give_currency.description",
     inputSchema: { type: "object", properties: { userId: Sn, amount: Nn, reason: Sn }, required: ["userId", "amount"] },
-    // expected-by: /economy/users/balance POST with op:add
-    handler: async (a, c) => raw(c, "POST", `/economy/users/balance`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), op: "add", reason: getOptStr(a, "reason") }),
+    handler: async (a, c) => raw(c, "POST", `/economy/give`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "take_currency",
     descriptionKey: "mcp.tools.take_currency.description",
     inputSchema: { type: "object", properties: { userId: Sn, amount: Nn, reason: Sn }, required: ["userId", "amount"] },
-    // expected-by: /economy/users/balance POST with op:remove
-    handler: async (a, c) => raw(c, "POST", `/economy/users/balance`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), op: "remove", reason: getOptStr(a, "reason") }),
+    handler: async (a, c) => raw(c, "POST", `/economy/take`, { userId: getStr(a, "userId"), amount: getOptNum(a, "amount"), reason: getOptStr(a, "reason") }),
   },
   {
     name: "list_economy_top",
     descriptionKey: "mcp.tools.list_economy_top.description",
     inputSchema: { type: "object", properties: { limit: Nn } },
-    // expected-by: /economy/top GET
     handler: async (a, c) => raw(c, "GET", `/economy/top${qs({ limit: getOptNum(a, "limit") })}`),
   },
   {
     name: "list_economy_transactions",
     descriptionKey: "mcp.tools.list_economy_transactions.description",
     inputSchema: { type: "object", properties: { userId: Sn, limit: Nn } },
-    // expected-by: /economy/transactions GET
     handler: async (a, c) => raw(c, "GET", `/economy/transactions${qs({ userId: getOptStr(a, "userId"), limit: getOptNum(a, "limit") })}`),
   },
   {
@@ -1355,7 +1339,6 @@ export const TOOLS: Tool[] = [
     name: "list_rep_top",
     descriptionKey: "mcp.tools.list_rep_top.description",
     inputSchema: { type: "object", properties: { limit: Nn } },
-    // expected-by: /reputation/top GET
     handler: async (a, c) => raw(c, "GET", `/reputation/top${qs({ limit: getOptNum(a, "limit") })}`),
   },
   {
@@ -1474,7 +1457,7 @@ export const TOOLS: Tool[] = [
     name: "list_starboard_top",
     descriptionKey: "mcp.tools.list_starboard_top.description",
     inputSchema: { type: "object", properties: { boardId: Sn, limit: Nn } },
-    handler: async (a, c) => raw(c, "GET", `/starboard/posts${qs({ boardId: getOptStr(a, "boardId"), limit: getOptNum(a, "limit") })}`),
+    handler: async (a, c) => raw(c, "GET", `/starboard/top${qs({ boardId: getOptStr(a, "boardId"), limit: getOptNum(a, "limit") })}`),
   },
   {
     name: "starboard_post_action",
@@ -1809,7 +1792,6 @@ export const TOOLS: Tool[] = [
     name: "test_welcome_message",
     descriptionKey: "mcp.tools.test_welcome_message.description",
     inputSchema: { type: "object", properties: { kind: Sn, userId: Sn } },
-    // expected-by: /welcome/test POST
     handler: async (a, c) => raw(c, "POST", `/welcome/test`, { kind: getOptStr(a, "kind"), userId: getOptStr(a, "userId") }),
   },
   {
@@ -1855,7 +1837,6 @@ export const TOOLS: Tool[] = [
     name: "list_onboarding_completions",
     descriptionKey: "mcp.tools.list_onboarding_completions.description",
     inputSchema: { type: "object", properties: { limit: Nn } },
-    // expected-by: /onboarding/completions GET
     handler: async (a, c) => raw(c, "GET", `/onboarding/completions${qs({ limit: getOptNum(a, "limit") })}`),
   },
   {
@@ -2250,21 +2231,18 @@ export const TOOLS: Tool[] = [
     name: "get_voice_recording_transcript",
     descriptionKey: "mcp.tools.get_voice_recording_transcript.description",
     inputSchema: { type: "object", properties: { sessionId: Sn }, required: ["sessionId"] },
-    // expected-by: /voice-recording/sessions/:id/transcript GET
     handler: async (a, c) => raw(c, "GET", `/voice-recording/sessions/${encodeURIComponent(getStr(a, "sessionId"))}/transcript`),
   },
   {
     name: "start_voice_recording",
     descriptionKey: "mcp.tools.start_voice_recording.description",
     inputSchema: { type: "object", properties: { channelId: Sn }, required: ["channelId"] },
-    // expected-by: /voice-recording/start POST
     handler: async (a, c) => raw(c, "POST", `/voice-recording/start`, { channelId: getStr(a, "channelId") }),
   },
   {
     name: "stop_voice_recording",
     descriptionKey: "mcp.tools.stop_voice_recording.description",
     inputSchema: { type: "object", properties: { sessionId: Sn }, required: ["sessionId"] },
-    // expected-by: /voice-recording/sessions/:id/stop POST
     handler: async (a, c) => raw(c, "POST", `/voice-recording/sessions/${encodeURIComponent(getStr(a, "sessionId"))}/stop`),
   },
   {
@@ -2349,7 +2327,6 @@ export const TOOLS: Tool[] = [
     name: "run_ai_assistant",
     descriptionKey: "mcp.tools.run_ai_assistant.description",
     inputSchema: { type: "object", properties: { prompt: Sn, context: On }, required: ["prompt"] },
-    // expected-by: /ai/run POST
     handler: async (a, c) => raw(c, "POST", `/ai/run`, { prompt: getStr(a, "prompt"), context: getOptObj(a, "context") }),
   },
   {
@@ -2412,7 +2389,6 @@ export const TOOLS: Tool[] = [
     name: "tts_speak",
     descriptionKey: "mcp.tools.tts_speak.description",
     inputSchema: { type: "object", properties: { text: Sn, voice: Sn, channelId: Sn }, required: ["text"] },
-    // expected-by: /tts/speak POST
     handler: async (a, c) => raw(c, "POST", `/tts/speak`, { text: getStr(a, "text"), voice: getOptStr(a, "voice"), channelId: getOptStr(a, "channelId") }),
   },
   {
