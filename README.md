@@ -16,6 +16,23 @@ npm install -g @modly/mcp-server
 
 …or skip global install and use `npx @modly/mcp-server` directly in your MCP host config (recommended — auto-updates with each release).
 
+## Run without npm registry
+
+The npm package isn't published yet. Until it is, run straight from GitHub — `npx` clones, builds (via the `prepare` script), and launches in one step:
+
+```bash
+# One-liner — auto-clones + builds + runs
+npx github:modly-public/modly-mcp
+
+# Or clone + run for local dev
+git clone https://github.com/modly-public/modly-mcp.git
+cd modly-mcp && npm install && npm run build && npm start
+```
+
+The same form works inside MCP host configs — see the [Host configs](#host-configs) section below for `npx github:modly-public/modly-mcp` snippets.
+
+> The git-URL form pulls `@modly/sdk` straight from `github:modly-public/modly-sdk`, so neither package needs to be on npm yet.
+
 ## Environment variables
 
 | Variable | Required | Default | Description |
@@ -25,6 +42,12 @@ npm install -g @modly/mcp-server
 | `MODLY_BASE_URL` | no | `https://modly.net` | Override for self-hosted Modly. |
 
 ## Host configs
+
+> **Which `args` to use?**
+> - `["-y", "@modly/mcp-server"]` — preferred, once the package is published to npm.
+> - `["-y", "github:modly-public/modly-mcp"]` — works **today** without an npm publish; pulls source from GitHub, runs the `prepare` build, and launches.
+>
+> The two forms are interchangeable inside any of the host configs below.
 
 ### Claude Desktop
 
@@ -38,7 +61,7 @@ Edit `claude_desktop_config.json`:
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "github:modly-public/modly-mcp"],
       "env": {
         "MODLY_GUILD_ID": "1234567890",
         "MODLY_API_KEY": "modly_pat_..."
@@ -47,6 +70,8 @@ Edit `claude_desktop_config.json`:
   }
 }
 ```
+
+Once `@modly/mcp-server` is published to npm, swap `"github:modly-public/modly-mcp"` for `"@modly/mcp-server"`.
 
 Restart Claude Desktop. The Modly tools appear under the hammer icon.
 
@@ -59,7 +84,7 @@ Restart Claude Desktop. The Modly tools appear under the hammer icon.
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "github:modly-public/modly-mcp"],
       "env": { "MODLY_GUILD_ID": "...", "MODLY_API_KEY": "modly_pat_..." }
     }
   }
@@ -75,7 +100,7 @@ Restart Claude Desktop. The Modly tools appear under the hammer icon.
   "mcpServers": {
     "modly": {
       "command": "npx",
-      "args": ["-y", "@modly/mcp-server"],
+      "args": ["-y", "github:modly-public/modly-mcp"],
       "env": { "MODLY_GUILD_ID": "...", "MODLY_API_KEY": "modly_pat_..." }
     }
   }

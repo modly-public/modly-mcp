@@ -12,6 +12,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "start": "node dist/index.js",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "engines": { "node": ">=20" },
@@ -22,9 +23,10 @@
   "homepage": "https://modly.net",
   "bugs": "https://github.com/modly-public/modly-mcp/issues",
   "keywords": ["modly", "discord", "mcp", "model-context-protocol", "ai", "agent"],
+  "//": "TODO swap @modly/sdk back to '^0.1.0' once published to npm. Pinned to git URL today so install-from-clone and `npx github:modly-public/modly-mcp` both work without hitting the registry.",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@modly/sdk": "^0.1.0"
+    "@modly/sdk": "github:modly-public/modly-sdk"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

@@ -2,9 +2,11 @@
 
 This server uses MCP's stdio transport. Every MCP host that supports stdio works the same way:
 
-1. Tell the host how to launch the server: `npx -y @modly/mcp-server`.
+1. Tell the host how to launch the server: `npx -y @modly/mcp-server` (npm) **or** `npx -y github:modly-public/modly-mcp` (git).
 2. Set two env vars: `MODLY_GUILD_ID` and `MODLY_API_KEY`.
 3. (Optional) Set `MODLY_BASE_URL` if you self-host Modly.
+
+> **Today**: `@modly/mcp-server` isn't published to npm yet. Use `github:modly-public/modly-mcp` everywhere you see `@modly/mcp-server` below — `npx` will clone, run the `prepare` build, and launch in one step. Once the npm package is live we'll flip these examples back.
 
 ## Get an API key
 
