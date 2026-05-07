@@ -55,7 +55,7 @@ Same `command` + `env` pattern. Drop into your host's MCP config file.
 | `send_webhook` | Broadcast a saved (or inline) embed to targets |
 | `list_moderation_cases` | List moderation cases, optionally filtered by user |
 
-The surface is intentionally narrow. Mutations that involve credentials (creating webhook URLs) or escalated moderation actions stay dashboard-only on purpose — agents can't add a new partnered server's webhook URL or ban a user with this server.
+The surface is intentionally narrow. Mutations that involve credentials (creating webhook URLs) or escalated moderation actions stay dashboard-only on purpose — agents can't add a new partnered server's webhook URL or ban a user with this server. The full bot/API surface is larger; the MCP server only mirrors the safe, high-signal subset.
 
 ## Self-hosting Modly
 
